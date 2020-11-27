@@ -30,7 +30,7 @@ onMount(() => {
 })
 </script>
 
-<div id="timeline" style="--w:{px_w}px; --h:{px_h}px">
+<div id="tl" style="--w:{px_w}px; --h:{px_h}px;">
     {#if v} <CtrlrV px_w={vw} px_h={px_h}/>
     {:else} <CtrlrH px_w={px_w} px_h={hh}/>
     {/if}
@@ -38,7 +38,9 @@ onMount(() => {
 </div>
 
 <style>
-#timeline {
+#tl {
+    --w: 300px;
+    --h: 300px;
     display: block;
     position: relative;
     width: var(--w);

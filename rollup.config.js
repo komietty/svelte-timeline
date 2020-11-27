@@ -7,7 +7,7 @@ import preprocess from "svelte-preprocess"
 import typescript from "@rollup/plugin-typescript"
 
 const devMode = false
-const bannerString = "/**\n" + "* SVELDITIMELINE " + pkg.version + "\n" + "* @licence MIT\n"+ "*/";
+const bannerString = "/**\n" + "* SVELDITOR " + pkg.version + "\n" + "* @licence MIT\n"+ "*/";
 
 export default {
     input: "src/index.js",
