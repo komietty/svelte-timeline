@@ -14,10 +14,11 @@ export declare let normcur:   Readable<number>;
 
 export declare interface Tracks<T extends ITrackable> extends Writable<TrackAsset<T>[]> {
     push(t:TrackAsset<T>): void;
-    tick(): void;
+    tick(c: number): void;
     splice(i:number, n: number): void;
     filter(t:TrackAsset<T>): void;
     flip(i: number, j: number): void;
+    scale(sc2px: number): void;
 }
 
 export declare function genTracks<T extends ITrackable>();

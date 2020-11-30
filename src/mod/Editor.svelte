@@ -2,7 +2,7 @@
 import { getContext } from 'svelte';
 import TrackV from './TrackV.svelte'
 import TrackU from './TrackU.svelte'
-import { current, normcur, dragged, px2sc, tl_sc, tl_px } from '../store';
+import { current, normcur, dragged, px2sc, tl_sc, tl_px, sc2px } from '../store';
 import type { Tracks }     from '../store';
 import type { ITrackable } from '../track';
 
@@ -12,7 +12,7 @@ export let w: number = document.body.clientWidth;
 export let h: number = 300;
 export let x: number = 0;
 export let v: boolean = true;
-$: measure = Array(parseFloat($tl_sc.toString()));
+$: measure = new Array(parseFloat($tl_sc.toString()) / 10);
 
 const dragstr_curr = e => { prv = e.pageX; e.dataTransfer.setDragImage(new Image(), 0, 0); dragged.set(true);}
 const dragmov_curr = e => { $current += (e.pageX - prv) * $px2sc; prv = e.pageX; }
@@ -30,7 +30,7 @@ const flip_fin = (e, tgt) => {
 }
 </script>
 
-<div id="timeline-editor" class:float={v} style="--w:{w}px; --h:{h}px; --x:{x}px">
+<div id="e" class:float={v} style="--w:{w}px; --h:{h}px; --x:{x}px">
     <div id="current"
          draggable="true"
          on:dragstart|stopPropagation={dragstr_curr}
@@ -44,11 +44,12 @@ const flip_fin = (e, tgt) => {
         <span id='seg'/>
     </div>
     <div id="inner" style="--duration:{$tl_px}px">
-        <div id="measure">
+        <div id="measure" style="--space:{$sc2px}">
             {#each measure as _, i}
-            {#if i%60 === 0}      <span style="height:20px; background-color:red"/>
-            {:else if i%10 === 0} <span style="height:20px;"/>
-            {:else}               <span style="height:10px;"/>
+            {#if i % 6 === 0}
+            <span class="min"/>
+            {:else}
+            <span class="sec"/>
             {/if}
             {/each}
         </div>
@@ -61,7 +62,7 @@ const flip_fin = (e, tgt) => {
                         on:dragover|preventDefault={() => false}
                         on:drop|preventDefault={e => flip_fin(e, i)}>
                         {#if      t.type === 'video'} <TrackV tla={t}/>
-                        {:else if t.type === 'utils'} <TrackU tla={t}/>
+                        {:else if t.type === 'utils'} <TrackU ta={t}/>
                         {/if}
                     </li>
                 {/each}
@@ -71,26 +72,28 @@ const flip_fin = (e, tgt) => {
 </div>
 
 <style>
-#timeline-editor {
+#e {
     width: var(--w);
     height: var(--h);
     display: block;
-    border-top: 1.5px solid #e6e6e6;
+    position: relative;
+    border-top: 1px solid #e6e6e6;
+    box-sizing: border-box;
     overflow-x: auto;
     cursor: col-resize;
 }
 
-#timeline-editor::-webkit-scrollbar {
+#e::-webkit-scrollbar {
     display: none;
 }
 
-#timeline-editor.float {
+#e.float {
     position: absolute;
     top: 0;
     left: var(--x);
 }
 
-#timeline-editor #current {
+#e #current {
     width: 10px;
     height: var(--h);
     z-index: 100;
@@ -99,37 +102,46 @@ const flip_fin = (e, tgt) => {
     left: var(--l);
 }
 
-#timeline-editor #current #top {
+#e #current #top {
     position: absolute;
     width: 100%;
     height: 15px;
     background-color: red;
 }
 
-#timeline-editor #current #seg {
+#e #current #seg {
     position: absolute;
     width: 2px;
     height: 100%;
     background-color: red;
 }
 
-#timeline-editor #inner {
+#e #inner {
     width: var(--duration);
     height: var(--h);
 }
 
-#timeline-editor #inner #measure {
-    height: 22px;
-    display: flex;
-    justify-content: space-between;
+#e #inner #measure {
+    height: 20px;
+}
+#e #inner #measure span {
+    margin-right: calc(10px * var(--space) - 2px);
+    display: inline-block;
+    vertical-align: top;
+    width: 2px;
 }
 
-#timeline-editor #inner #measure span {
-    width: 1.5px;
+#e #inner #measure .min {
+    height: 15px;
+    background-color:red;
+}
+
+#e #inner #measure .sec {
+    height: 10px;
     background-color: #e6e6e6;
 }
 
-#timeline-editor #inner #tracks {
+#e #inner #tracks {
     overflow-x: hidden;
 }
 </style>

@@ -1,17 +1,23 @@
 <script lang='ts'>
-    import {current, paused, sc2px, tl_sc} from '../store';
-    export let px_w: number = 250;
-    export let px_h: number = 300;
-    const padding = 30;
-    $: curr = ($current).toFixed(1);
+import { getContext } from 'svelte';
+import {current, paused, sc2px, tl_sc} from '../store';
+import type { Tracks }     from '../store';
+import type { ITrackable } from '../track';
+export let px_w: number = 250;
+export let px_h: number = 300;
+export let px_e: number = 300;
+const padding = 30;
+let tracks = getContext('tracks') as Tracks<ITrackable>;
+const zoomin  = () => { $sc2px = $sc2px - 1; tracks.scale($sc2px); }
+const zoomout = () => { $sc2px = $sc2px + 1; tracks.scale($sc2px); }
 </script>
 
 <div id="ctrler" style="--w:{px_w}px; --h:{px_h}px; --p:{padding}px">
 	<button id="btn" on:click={() => $paused = !$paused}> <span>toggle play</span></button>
 	<input bind:value={$current}/>
 	<div id="duration">
-		<button on:click={() => $sc2px = $sc2px - 1} disabled={$tl_sc * ($sc2px - 1) < document.body.clientWidth}>zoom in </button>
-		<button on:click={() => $sc2px = $sc2px + 1} disabled={$sc2px > 9}>                                       zoom out</button>
+		<button on:click={() => zoomin()}  disabled={$tl_sc * ($sc2px - 1) < px_e}>zoom in </button>
+		<button on:click={() => zoomout()} disabled={$sc2px > 9}>                  zoom out</button>
 		<input bind:value={$tl_sc} min=10>
 	</div>
 </div>
@@ -21,7 +27,7 @@
     width: var(--w);
     height: var(--h);
     padding: var(--p);
-    border: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     box-sizing: border-box;
 }
 #ctrler #duration button {

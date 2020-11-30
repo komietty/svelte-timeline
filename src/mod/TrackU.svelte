@@ -1,59 +1,45 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { current, focusedID, px2sc } from '../store';
+import { focusedID, px2sc } from '../store';
 import type { TrackAsset, ITrackable } from '../track';
-
-export let tla: TrackAsset<ITrackable>;
-let l = 0;
-let r = 0;
-let name: string = tla.uid.toString();
-let elm : HTMLElement;
-
-onMount(() => {
-    (function loop(){
-        window.requestAnimationFrame(loop);
-        tla.target.visible = tla.is_visible($current);
-        l = tla.px_l;
-        r = tla.px_r;
-    })();
-})
+export let ta: TrackAsset<ITrackable>;
 </script>
 
-<div class="material"
-     class:selected={tla.uid === $focusedID}
-     style="margin-left:{l}px; width:{r-l}px"
+<div class="m"
+     class:selected={ta.uid === $focusedID}
+     style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px"
      draggable = "true"
-     bind:this={elm}
-     on:mousedown={() => $focusedID = tla.uid}
-     on:dragstart={e => tla.dragstart_trans(e)}
-     on:drag={e => tla.dragmove_trans(e, $px2sc)}
-     on:dragend={e => tla.dragmove_trans(e, $px2sc)}
+     on:mousedown={() => $focusedID = ta.uid}
+     on:dragstart={e => ta.dragstart_trans(e)}
+     on:drag={e => ta.dragmove_trans(e, $px2sc)}
+     on:dragend={e => ta.dragmove_trans(e, $px2sc)}
      >
      <span class="scaler"
            style="left: 0"
            draggable="true"
-           on:dragstart|stopPropagation={tla.dragstart_scale}
-           on:drag|stopPropagation={e => tla.dragmove_scale_l(e, $px2sc)}
+           on:dragstart|stopPropagation={ta.dragstart_scale}
+           on:drag|stopPropagation={e => ta.dragmove_scale_l(e, $px2sc)}
            on:dragenter|preventDefault|stopPropagation={() => false}
            on:dragover|preventDefault|stopPropagation={() => false}
            on:drop|preventDefault|stopPropagation={() => false}
-           on:dragend|stopPropagation={e => tla.dragmove_scale_l(e, $px2sc)}
-     ></span>
-     <span id="name">{name}</span>
-     <span class="scaler"
+           on:dragend|stopPropagation={e => ta.dragmove_scale_l(e, $px2sc)}></span>
+    <div id="info">
+        <span>{ta.name}</span>
+        <span>{ta.uid.toString().slice(0, 5)}</span>
+        <span>{ta.visible}</span>
+    </div>
+    <span class="scaler"
            style="right:0"
            draggable="true"
-           on:dragstart|stopPropagation={tla.dragstart_scale}
-           on:drag|stopPropagation={e => tla.dragmove_scale_r(e, $px2sc)}
+           on:dragstart|stopPropagation={ta.dragstart_scale}
+           on:drag|stopPropagation={e => ta.dragmove_scale_r(e, $px2sc)}
            on:dragenter|preventDefault|stopPropagation={() => false}
            on:dragover|preventDefault|stopPropagation={() => false}
            on:drop|preventDefault|stopPropagation={() => false}
-           on:dragend|stopPropagation={e => tla.dragmove_scale_r(e, $px2sc)}
-     ></span>
+           on:dragend|stopPropagation={e => ta.dragmove_scale_r(e, $px2sc)}></span>
 </div>
 
 <style>
-.material {
+.m {
     display: block;
     margin: 2px 0;
     cursor: move;
@@ -62,16 +48,20 @@ onMount(() => {
     height: 30px;
     border-radius: 5px;
 }
-.material.selected {
+.m.selected {
     background-color: #ff0000;
     color: #ffffff;
 }
-.material #name {
-    position: absolute;
-    left: 10px;
-    top: 3px;
+.m #info {
+    width: calc(100% - 30px);
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    margin-left: 15px;
+    display: inline-block;
+    overflow: hidden;
 }
-.material .scaler {
+.m .scaler {
     cursor: ew-resize;
     position: absolute;
     border-radius: 5px;

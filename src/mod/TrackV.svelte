@@ -31,7 +31,6 @@ const onLoadVideo = () => {
         if($paused || !tla.is_visible($current)) elm.pause();
         else elm.play();
         if(_dragged || $dragged) _current = $current - tla.sc_l; 
-        tla.target.visible = tla.is_visible($current);
         mgnl = tla.px_l;
     })();
 }

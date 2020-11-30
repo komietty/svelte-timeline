@@ -21,7 +21,7 @@ export declare class TrackAsset<T extends ITrackable> {
 
     constructor(tgt: T, name: string, type: string, sc2px:number, sc_l: number, sc_r:number);
     getdata(): object;
-    tick(depth: number): void;
+    tick(depth: number, curr: number): void;
     is_visible(t: number): boolean;
     dragstart_trans(e): void;
     dragmove_trans(e, px2sc:number): void; 
