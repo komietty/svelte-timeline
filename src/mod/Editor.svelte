@@ -55,13 +55,13 @@ const flip_fin = (e, tgt) => {
         </div>
         <div id="tracks">
             <ul style="list-style:none; padding: 0">
-                {#each $tracks as t, i (t.uid)}
+                {#each $tracks as t, i (t.uuid)}
                     <li draggable="true"
                         style="border-bottom: 1px solid #eeeeee"
                         on:dragstart={e => flip_str(e, i)}
                         on:dragover|preventDefault={() => false}
                         on:drop|preventDefault={e => flip_fin(e, i)}>
-                        {#if      t.type === 'video'} <TrackV tla={t}/>
+                        {#if      t.type === 'video'} <TrackV ta={t}/>
                         {:else if t.type === 'utils'} <TrackU ta={t}/>
                         {/if}
                     </li>

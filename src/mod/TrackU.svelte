@@ -5,10 +5,10 @@ export let ta: TrackAsset<ITrackable>;
 </script>
 
 <div class="m"
-     class:selected={ta.uid === $focusedID}
+     class:selected={ta.uuid === $focusedID}
      style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px"
      draggable = "true"
-     on:mousedown={() => $focusedID = ta.uid}
+     on:mousedown={() => $focusedID = ta.uuid}
      on:dragstart={e => ta.dragstart_trans(e)}
      on:drag={e => ta.dragmove_trans(e, $px2sc)}
      on:dragend={e => ta.dragmove_trans(e, $px2sc)}
@@ -24,7 +24,7 @@ export let ta: TrackAsset<ITrackable>;
            on:dragend|stopPropagation={e => ta.dragmove_scale_l(e, $px2sc)}></span>
     <div id="info">
         <span>{ta.name}</span>
-        <span>{ta.uid.toString().slice(0, 5)}</span>
+        <span>{ta.uuid.toString().slice(0, 5)}</span>
         <span>{ta.visible}</span>
     </div>
     <span class="scaler"

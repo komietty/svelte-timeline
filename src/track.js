@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid"
 
 export class TrackAsset {
     target;
-    uid;
+    uuid;
     type;
     name;
     visible = false;
@@ -14,9 +14,9 @@ export class TrackAsset {
     dif_px_l = 0;
     dif_px_r = 0;
 
-    constructor(tgt, name, type, sc2px, sc_l, sc_r) {
+    constructor(tgt, name, type, sc2px, sc_l, sc_r, uuid) {
         this.target = tgt;
-        this.uid  = uuidv4();
+        this.uuid = uuid? uuid : uuidv4();
         this.name = name;
         this.type = type;
         this.sc_l = sc_l;
@@ -55,10 +55,7 @@ export class TrackAsset {
         e.dataTransfer.setDragImage(new Image(), 0, 0)
     }
 
-    onchange_tl_scale = (sc2px) => {
-        this.px_l = this.sc_l * sc2px; this.px_r = this.sc_r * sc2px;
-        console.log(sc2px);
-        }
+    onchange_tl_scale = (sc2px) => { this.px_l = this.sc_l * sc2px; this.px_r = this.sc_r * sc2px; }
     onchange_l = (e, px2sc) => { this.px_l = e.pageX + this.dif_px_l; this.sc_l = this.px_l * px2sc; }
     onchange_r = (e, px2sc) => { this.px_r = e.pageX + this.dif_px_r; this.sc_r = this.px_r * px2sc; }
 }

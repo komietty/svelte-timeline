@@ -3,48 +3,47 @@ import { onMount } from "svelte";
 import { current, paused, dragged, focusedID, px2sc, sc2px } from '../store';
 import type { TrackAsset, ITrackable } from "../track";
 
-export let tla: TrackAsset<ITrackable>;
+export let ta: TrackAsset<ITrackable>;
 let elm:  HTMLVideoElement;
 let name: string;
-let mgnl = 0;
 let _current = 0;
 let _dragged = false;
 let _paused  = true;
-let duration = 300;
+let duration = 3;
 $: width = isNaN(duration)? 300 : duration * $sc2px;
 
 onMount(() => {
-    elm.src = tla.target.url;
+    elm.src = ta.target.url;
+    console.log(ta.target.url)
     elm.addEventListener('canplay', onLoadVideo);
 });
 
 const onLoadVideo = () => {
-    tla.px_l = 0;
-    tla.px_r = width;
-    tla.sc_l = 0;
-    tla.sc_r = duration;
-    tla.target.OnLoadHtmlElement(elm);
+    ta.px_l = 0;
+    ta.px_r = width;
+    ta.sc_l = 0;
+    ta.sc_r = duration;
+    ta.target.OnLoadHtmlElement(elm);
+    _current = $current - ta.sc_l;
     elm.removeEventListener('canplay', onLoadVideo);
-
     (function loop(){
         window.requestAnimationFrame(loop);
-        if($paused || !tla.is_visible($current)) elm.pause();
-        else elm.play();
-        if(_dragged || $dragged) _current = $current - tla.sc_l; 
-        mgnl = tla.px_l;
+        if($paused || !ta.visible) elm.pause();
+        else if(_paused) elm.play();
+        if(_dragged || $dragged) _current = $current - ta.sc_l; 
     })();
 }
 </script>
 
-<div class="material"
-     class:selected={tla.uid === $focusedID}
-     style="--mgn-l:{mgnl}px; --width:{width}px;"
+<div class="m"
+     class:selected={ta.uuid === $focusedID}
+     style="--mgn-l:{ta.px_l}px; --width:{width}px;"
      draggable = "true"
-     on:mousedown={() => $focusedID = tla.uid}
-     on:dragstart={e => {tla.dragstart_trans(e); _dragged = true;}}
-     on:drag={e => {tla.dragmove_trans(e, $px2sc);}}
-     on:dragend={e => {tla.dragmove_trans(e, $px2sc); _dragged = false;}}
-     ><video loop id="v"
+     on:mousedown={() => $focusedID = ta.uuid}
+     on:dragstart={e => {ta.dragstart_trans(e); _dragged = true;}}
+     on:drag={e => {ta.dragmove_trans(e, $px2sc);}}
+     on:dragend={e => {ta.dragmove_trans(e, $px2sc); _dragged = false;}}>
+     <video loop id="v"
              style="display:none"
              bind:this={elm} 
              bind:currentTime={_current}
@@ -53,11 +52,11 @@ const onLoadVideo = () => {
              >
         <track kind="captions">
     </video>
-	<span>{name}: {_paused ? "pausing":"playing"}</span>
+	<span>{ta.target.url}: {_paused ? "pausing":"playing"}</span>
 </div>
 
 <style>
-.material {
+.m {
     margin: 2px 0;
     margin-left: var(--mgn-l);
     width: var(--width);
@@ -67,12 +66,14 @@ const onLoadVideo = () => {
     border-radius: 5px;
     overflow: hidden;
 }
-.material.selected {
+.m.selected {
     background-color: #ff0000;
     color: #ffffff;
 }
-.material span {
+.m span {
     margin: 0 10px;
+    line-height: 30px;
+    font-size: 12px;
     line-height: 30px;
 }
 </style>

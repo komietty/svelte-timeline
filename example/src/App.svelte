@@ -13,12 +13,12 @@ class Obj {
 const tracks:any = genTracks<Obj>();
 
 
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60  , undefined));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60  , undefined));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
+tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
 
 setContext("tracks", tracks);
 </script>
