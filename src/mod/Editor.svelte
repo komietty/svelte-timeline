@@ -1,10 +1,12 @@
 <script lang="ts">
 import { getContext } from 'svelte';
-import TrackV from './TrackV.svelte'
-import TrackU from './TrackU.svelte'
+import Track from './Track.svelte'
+import TU from './TU.svelte'
+import TV from './TV.svelte'
 import { current, normcur, dragged, px2sc, tl_sc, tl_px, sc2px } from '../store';
 import type { Tracks }     from '../store';
 import type { ITrackable } from '../track';
+import { get } from 'svelte/store';
 
 let prv: number;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
@@ -28,6 +30,8 @@ const flip_fin = (e, tgt) => {
     const id = e.dataTransfer.getData('id');
     if(id) tracks.flip(parseInt(id), tgt);
 }
+
+const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 </script>
 
 <div id="e" class:float={v} style="--w:{w}px; --h:{h}px; --x:{x}px">
@@ -61,8 +65,8 @@ const flip_fin = (e, tgt) => {
                         on:dragstart={e => flip_str(e, i)}
                         on:dragover|preventDefault={() => false}
                         on:drop|preventDefault={e => flip_fin(e, i)}>
-                        {#if      t.type === 'video'} <TrackV ta={t}/>
-                        {:else if t.type === 'utils'} <TrackU ta={t}/>
+                        {#if      t.type === 'video'} <Track ta={t}><TV ta={t}/></Track>
+                        {:else if t.type === 'utils'} <Track ta={t} on:closeMenu={closeMenu}><TU ta={t}/></Track>
                         {/if}
                     </li>
                 {/each}

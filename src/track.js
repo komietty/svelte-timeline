@@ -5,8 +5,10 @@ export class TrackAsset {
     uuid;
     type;
     name;
+    menu    = false;
     visible = false;
     focused = false;
+    order = 0;
     sc_l = 0;
     sc_r = 0;
     px_l = 0;

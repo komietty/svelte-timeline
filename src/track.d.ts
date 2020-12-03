@@ -10,8 +10,10 @@ export declare class TrackAsset<T extends ITrackable> {
     public uuid:    number;
     public type:    string;
     public name:    string;
+    public menu:    boolean;
     public visible: boolean;
     public focused: boolean;
+    public order:   number;
     public sc_l:    number;
     public sc_r:    number;
     public px_l:    number;

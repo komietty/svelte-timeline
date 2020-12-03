@@ -25,6 +25,9 @@ export function genTracks(){
         push: (t) => update(arr => {
             return [...arr, t];
         }),
+        delete: (t) => update(arr => {
+            return arr.filter(a => a !== t);
+        }),
         splice: (i, n) => update(arr => {
             arr.splice(i, n);
             return arr;
