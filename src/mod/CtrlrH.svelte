@@ -7,8 +7,8 @@ export let px_w: number = document.body.clientWidth;
 export let px_h: number = 300;
 export let px_e: number = 300;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
-const zoomin  = () => { $sc2px = $sc2px - 1; tracks.scale($sc2px); }
-const zoomout = () => { $sc2px = $sc2px + 1; tracks.scale($sc2px); }
+const zoomin  = () => { $sc2px = $sc2px - 1; tracks.scale(); }
+const zoomout = () => { $sc2px = $sc2px + 1; tracks.scale(); }
 </script>
 
 <div id="ctrler" style="--w:{px_w}px; --h:{px_h}px">

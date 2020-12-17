@@ -5,14 +5,14 @@ export let ta: TrackAsset<ITrackable>;
 </script>
 
 <span class="scaler"
-       style="left: 0"
+       style="left:0"
        draggable="true"
-       on:dragstart|stopPropagation={ta.dragstart_scale}
-       on:drag|stopPropagation={e => ta.dragmove_scale_l(e, $px2sc)}
+       on:dragstart|stopPropagation={e => ta.dragbgn_scale(e)}
+       on:drag|stopPropagation={e => ta.dragmov_scale_l(e)}
        on:dragenter|preventDefault|stopPropagation={() => false}
        on:dragover|preventDefault|stopPropagation={() => false}
        on:drop|preventDefault|stopPropagation={() => false}
-       on:dragend|stopPropagation={e => ta.dragmove_scale_l(e, $px2sc)}/>
+       on:dragend|stopPropagation={e => ta.dragfin_scale_l(e)}/>
 <div id="info">
     <span>{ta.name}</span>
     <span>{ta.uuid.toString().slice(0, 5)}</span>
@@ -22,12 +22,12 @@ export let ta: TrackAsset<ITrackable>;
 <span class="scaler"
        style="right:0"
        draggable="true"
-       on:dragstart|stopPropagation={ta.dragstart_scale}
-       on:drag|stopPropagation={e => ta.dragmove_scale_r(e, $px2sc)}
+       on:dragstart|stopPropagation={e => ta.dragbgn_scale(e)}
+       on:drag|stopPropagation={e => ta.dragmov_scale_r(e)}
        on:dragenter|preventDefault|stopPropagation={() => false}
        on:dragover|preventDefault|stopPropagation={() => false}
        on:drop|preventDefault|stopPropagation={() => false}
-       on:dragend|stopPropagation={e => ta.dragmove_scale_r(e, $px2sc)}/>
+       on:dragend|stopPropagation={e => ta.dragfin_scale_r(e)}/>
 
 <style>
 #info {

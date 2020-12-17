@@ -22,9 +22,9 @@ const openMenu = async(e) => {
      style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px"
      draggable = "true"
      on:mousedown={() => $focusedID = ta.uuid}
-     on:dragstart={e => ta.dragstart_trans(e)}
-     on:drag={e => ta.dragmove_trans(e, $px2sc)}
-     on:dragend={e => ta.dragmove_trans(e, $px2sc)}
+     on:dragstart={e => ta.dragbgn_trans(e)}
+     on:drag={e => ta.dragmov_trans(e)}
+     on:dragend={e => ta.dragfin_trans(e)}
      on:contextmenu|preventDefault={openMenu}>
      <slot/>
 </div>

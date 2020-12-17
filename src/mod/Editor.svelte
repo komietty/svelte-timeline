@@ -35,19 +35,19 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 </script>
 
 <div id="e" class:float={v} style="--w:{w}px; --h:{h}px; --x:{x}px">
-    <div id="current"
-         draggable="true"
-         on:dragstart|stopPropagation={dragstr_curr}
-         on:drag|preventDefault={dragmov_curr}
-         on:dragenter|preventDefault|stopPropagation={() => false}
-         on:dragover|preventDefault|stopPropagation={() => false}
-         on:drop|preventDefault|stopPropagation={() => false}
-         on:dragend|preventDefault|stopPropagation={dragend_curr}
-         style="--l:{$normcur}px">
-        <span id='top'/>
-        <span id='seg'/>
-    </div>
-    <div id="inner" style="--duration:{$tl_px}px">
+    <div id='inner' style="--duration:{$tl_px}px">
+        <div id='current'
+             on:dragstart|stopPropagation={dragstr_curr}
+             on:drag|preventDefault={dragmov_curr}
+             on:dragenter|preventDefault|stopPropagation={() => false}
+             on:dragover|preventDefault|stopPropagation={() => false}
+             on:drop|preventDefault|stopPropagation={() => false}
+             on:dragend|preventDefault|stopPropagation={dragend_curr}
+             style="--l:{$normcur}px; --hh:{Math.max($tracks.length * 35 + 20, h)}px;"
+             draggable="true">
+            <span id='top'/>
+            <span id='seg'/>
+        </div>
         <div id="measure" style="--space:{$sc2px}">
             {#each measure as _, i}
             {#if i % 6 === 0}
@@ -58,15 +58,15 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
             {/each}
         </div>
         <div id="tracks">
-            <ul style="list-style:none; padding: 0">
+            <ul style="list-style:none; padding: 0; margin: 0;">
                 {#each $tracks as t, i (t.uuid)}
                     <li draggable="true"
                         style="border-bottom: 1px solid #eeeeee"
                         on:dragstart={e => flip_str(e, i)}
                         on:dragover|preventDefault={() => false}
                         on:drop|preventDefault={e => flip_fin(e, i)}>
-                        {#if      t.type === 'video'} <Track ta={t}><TV ta={t}/></Track>
-                        {:else if t.type === 'utils'} <Track ta={t} on:closeMenu={closeMenu}><TU ta={t}/></Track>
+                        {#if t.target.url !== undefined} <Track ta={t}><TV ta={t}/></Track>
+                        {:else} <Track ta={t} on:closeMenu={closeMenu}><TU ta={t}/></Track>
                         {/if}
                     </li>
                 {/each}
@@ -97,23 +97,23 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
     left: var(--x);
 }
 
-#e #current {
+#e #inner #current {
     width: 10px;
-    height: var(--h);
+    height: var(--hh);
     z-index: 100;
     position: absolute;
     top: 0;
     left: var(--l);
 }
 
-#e #current #top {
+#e #inner #current #top {
     position: absolute;
     width: 100%;
     height: 15px;
     background-color: red;
 }
 
-#e #current #seg {
+#e #inner #current #seg {
     position: absolute;
     width: 2px;
     height: 100%;
@@ -122,7 +122,6 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 
 #e #inner {
     width: var(--duration);
-    height: var(--h);
 }
 
 #e #inner #measure {

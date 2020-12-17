@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import { current, paused, dragged, sc2px } from '../store';
 import type { TrackAsset, ITrackable } from "../track";
 export let ta: TrackAsset<ITrackable>;
-let elm:  HTMLVideoElement;
+let elm: HTMLVideoElement;
 let _current = 0;
 let _dragged = false;
 let _paused  = true;
@@ -12,7 +12,6 @@ $: width = isNaN(duration)? 300 : duration * $sc2px;
 
 onMount(() => {
     elm.src = ta.target.url;
-    console.log(ta.target.url)
     elm.addEventListener('canplay', onLoadVideo);
 });
 

@@ -1,11 +1,10 @@
 <script lang="ts">
 import { setContext } from 'svelte';
-import { get } from 'svelte/store'
-import { genTracks, TimelineFrame, TrackAsset, sc2px } from 'sveltmline'
+import { genTracks, TimelineFrame, TrackAsset } from 'sveltmline'
 
 class Obj {
     visible = false;
-    url = "";
+    url = undefined;
     OnLoadHtmlElement(elm: HTMLElement){};
     tick(depth: number){};
 }
@@ -13,12 +12,23 @@ class Obj {
 const tracks:any = genTracks<Obj>();
 
 
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60  , undefined));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 0, 60  , undefined));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
-tracks.push(new TrackAsset(new Obj(), 'u', 'utils', get(sc2px), 60, 120, undefined));
+const t1 = new TrackAsset(new Obj(), 't1');
+const t2 = new TrackAsset(new Obj(), 't2');
+const t3 = new TrackAsset(new Obj(), 't3');
+const t4 = new TrackAsset(new Obj(), 't4');
+const t5 = new TrackAsset(new Obj(), 't5');
+const t6 = new TrackAsset(new Obj(), 't6');
+const t7 = new TrackAsset(new Obj(), 't7');
+const t8 = new TrackAsset(new Obj(), 't8');
+t2.setposition(60, 120);
+tracks.push(t1);
+tracks.push(t2);
+tracks.push(t3);
+tracks.push(t4);
+tracks.push(t5);
+tracks.push(t6);
+tracks.push(t7);
+tracks.push(t8);
 
 setContext("tracks", tracks);
 </script>
