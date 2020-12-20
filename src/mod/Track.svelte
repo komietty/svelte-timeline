@@ -2,17 +2,17 @@
 import { createEventDispatcher, getContext } from 'svelte';
 import type { TrackAsset, ITrackable } from '../track';
 import type { Tracks } from '../store';
-import { focusedID, px2sc } from '../store';
+import { focusedID } from '../store';
 import Menu from './Menu.svelte';
 export let ta: TrackAsset<ITrackable>;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
 let dsp = createEventDispatcher();
-let pos = { x: 0, y: 0 };
+let prm = {n: ta.name, x: 0, y: 0 };
 
 const openMenu = async(e) => {
     dsp('closeMenu');
 	if (ta.menu) await new Promise(res => setTimeout(res, 100));
-	pos = { x: e.clientX, y: e.clientY };
+	prm = {n: ta.name, x: e.clientX, y: e.clientY };
 	ta.menu = true;
 }
 </script>
@@ -30,9 +30,11 @@ const openMenu = async(e) => {
 </div>
 
 {#if ta.menu}
-<Menu {...pos}
+<Menu {...prm} 
     on:clickoutside={e => ta.menu = false}
-    on:deltrk={() => tracks.delete(ta)}/>
+    on:deltrk={e => tracks.delete(ta)}
+    on:rename={e => tracks.rename(ta, e.detail.name)}
+    />
 {/if}
 
 <style>

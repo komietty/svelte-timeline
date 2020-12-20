@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import { current, paused, dragged, sc2px } from '../store';
 import type { TrackAsset, ITrackable } from "../track";
 export let ta: TrackAsset<ITrackable>;
+export let debug = false;
 let elm: HTMLVideoElement;
 let _current = 0;
 let _dragged = false;
@@ -16,18 +17,19 @@ onMount(() => {
 });
 
 const onLoadVideo = () => {
-    ta.px_l = 0;
-    ta.px_r = width;
-    ta.sc_l = 0;
-    ta.sc_r = duration;
+    ta.px_r = ta.px_l + width;
+    ta.sc_r = ta.sc_l + duration;
     ta.target.OnLoadHtmlElement(elm);
     _current = $current - ta.sc_l;
     elm.removeEventListener('canplay', onLoadVideo);
     (function loop(){
-        window.requestAnimationFrame(loop);
-        if($paused || !ta.visible) elm.pause();
-        else if(_paused) elm.play();
-        if(_dragged || $dragged) _current = $current - ta.sc_l; 
+        const r = window.requestAnimationFrame(loop);
+        if(!elm) window.cancelAnimationFrame(r);
+        else {
+            if($paused || !ta.visible) elm.pause();
+            else if(_paused) elm.play();
+            if(_dragged || $dragged) _current = $current - ta.sc_l; 
+        }
     })();
 }
 </script>
@@ -41,7 +43,13 @@ const onLoadVideo = () => {
     <track kind="captions">
 </video>
 <div>
+    <span>{ta.name}</span>
+    {#if debug}
+    <span>{ta.uuid.toString().slice(0, 5)}</span>
+    <span>{ta.visible}</span>
+    <span>{ta.order}</span>
     <span>{ta.target.url}: {_paused ? "pausing":"playing"}</span>
+    {/if}
 </div>
 
 <style>

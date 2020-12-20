@@ -65,9 +65,11 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
                         on:dragstart={e => flip_str(e, i)}
                         on:dragover|preventDefault={() => false}
                         on:drop|preventDefault={e => flip_fin(e, i)}>
-                        {#if t.target.url !== undefined} <Track ta={t}><TV ta={t}/></Track>
-                        {:else} <Track ta={t} on:closeMenu={closeMenu}><TU ta={t}/></Track>
-                        {/if}
+                        <Track ta={t} on:closeMenu={closeMenu}>
+                            {#if t.target.url} <TV ta={t}/>
+                            {:else}            <TU ta={t}/>
+                            {/if}
+                        </Track>
                     </li>
                 {/each}
             </ul>

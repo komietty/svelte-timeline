@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { TrackAsset, ITrackable } from '../track';
-import { px2sc } from '../store';
 export let ta: TrackAsset<ITrackable>;
+export let debug = false;
 </script>
 
 <span class="scaler"
@@ -15,9 +15,11 @@ export let ta: TrackAsset<ITrackable>;
        on:dragend|stopPropagation={e => ta.dragfin_scale_l(e)}/>
 <div id="info">
     <span>{ta.name}</span>
+    {#if debug}
     <span>{ta.uuid.toString().slice(0, 5)}</span>
     <span>{ta.visible}</span>
     <span>{ta.order}</span>
+    {/if}
 </div>
 <span class="scaler"
        style="right:0"

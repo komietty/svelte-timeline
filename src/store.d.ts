@@ -16,6 +16,7 @@ export declare let normcur:   Readable<number>;
 export declare interface Tracks<T extends ITrackable> extends Writable<TrackAsset<T>[]> {
     push(t:TrackAsset<T>): void;
     tick(c: number): void;
+    rename(t:TrackAsset<T>, n: string): void;
     delete(t:TrackAsset<T>): void;
     splice(i:number, n: number): void;
     filter(t:TrackAsset<T>): void;

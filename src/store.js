@@ -27,6 +27,11 @@ export function genTracks(){
             t.order = arr.length;
             return [...arr, t];
         }),
+        rename: (t, n) => update(arr => {
+            t.name = n;
+            t.onchange();
+            return arr;
+        }),
         delete: (t) => update(arr => {
             t.ondelete();
             return arr.filter(a => a !== t).map(a => {
