@@ -1,5 +1,6 @@
 <script lang="ts">
 import { createEventDispatcher, getContext } from 'svelte';
+import { base_col, slct_col, base_txt, slct_txt } from '../style';
 import type { TrackAsset, ITrackable } from '../track';
 import type { Tracks } from '../store';
 import { focusedID } from '../store';
@@ -19,7 +20,7 @@ const openMenu = async(e) => {
 
 <div class="m"
      class:selected={ta.uuid === $focusedID}
-     style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px"
+     style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px; --b:{base_col}; --s:{slct_col}; --bt:{base_txt}; --st:{slct_txt};"
      draggable = "true"
      on:mousedown={() => $focusedID = ta.uuid}
      on:dragstart={e => ta.dragbgn_trans(e)}
@@ -43,12 +44,13 @@ const openMenu = async(e) => {
     margin: 2px 0;
     cursor: move;
     position: relative;
-    background-color: #e6e6e6;
+    background-color: var(--b);
     height: 30px;
     border-radius: 5px;
+    color: var(--bt);
 }
 .m.selected {
-    background-color: #ff0000;
-    color: #ffffff;
+    background-color: var(--s);
+    color: var(--st);
 }
 </style>

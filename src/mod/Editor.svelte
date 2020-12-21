@@ -1,19 +1,19 @@
 <script lang="ts">
 import { getContext } from 'svelte';
-import Track from './Track.svelte'
-import TU from './TU.svelte'
-import TV from './TV.svelte'
+import { get } from 'svelte/store';
 import { current, normcur, dragged, px2sc, tl_sc, tl_px, sc2px } from '../store';
+import { vertical, base_col, curr_col } from '../style';
 import type { Tracks }     from '../store';
 import type { ITrackable } from '../track';
-import { get } from 'svelte/store';
+import Track from './Track.svelte'
+import TU    from './TU.svelte'
+import TV    from './TV.svelte'
 
 let prv: number;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
 export let w: number = document.body.clientWidth;
 export let h: number = 300;
 export let x: number = 0;
-export let v: boolean = true;
 $: measure = new Array(parseFloat($tl_sc.toString()) / 10);
 
 const dragstr_curr = e => { prv = e.pageX; e.dataTransfer.setDragImage(new Image(), 0, 0); dragged.set(true);}
@@ -34,7 +34,7 @@ const flip_fin = (e, tgt) => {
 const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 </script>
 
-<div id="e" class:float={v} style="--w:{w}px; --h:{h}px; --x:{x}px">
+<div id="e" class:float={vertical} style="--w:{w}px; --h:{h}px; --x:{x}px; --c:{curr_col}; --b:{base_col}">
     <div id='inner' style="--duration:{$tl_px}px">
         <div id='current'
              on:dragstart|stopPropagation={dragstr_curr}
@@ -112,14 +112,14 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
     position: absolute;
     width: 100%;
     height: 15px;
-    background-color: red;
+    background-color: var(--c);
 }
 
 #e #inner #current #seg {
     position: absolute;
     width: 2px;
     height: 100%;
-    background-color: red;
+    background-color: var(--c);
 }
 
 #e #inner {
@@ -138,12 +138,12 @@ const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 
 #e #inner #measure .min {
     height: 15px;
-    background-color:red;
+    background-color:var(--c);
 }
 
 #e #inner #measure .sec {
-    height: 10px;
-    background-color: #e6e6e6;
+    height: 7px;
+    background-color: var(--b);
 }
 
 #e #inner #tracks {

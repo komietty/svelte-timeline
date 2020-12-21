@@ -1,4 +1,18 @@
-<script lang="ts">
+# Svelditor
+Tab ui editor library for svelte.
+
+Typescript is available. Follow the instruction [here](https://svelte.dev/blog/svelte-and-typescript).
+
+<img src="img/screenshot.png" width=100%>
+
+## Usage
+Import sveltmline by npm.
+```
+npm i sveltmline
+```
+
+```Svelte
+<script>
 import { setContext } from 'svelte';
 import { genTracks, TimelineFrame, TrackAsset } from 'sveltmline'
 
@@ -9,7 +23,7 @@ class Obj {
     tick(depth: number){};
 }
 
-const tracks:any = genTracks<Obj>();
+const tracks = genTracks<Obj>();
 const t1 = new TrackAsset(new Obj(), 'track_1'); t1.setposition(60, 100);  tracks.push(t1);
 const t2 = new TrackAsset(new Obj(), 'track_2'); t2.setposition(10, 60);   tracks.push(t2);
 const t3 = new TrackAsset(new Obj(), 'track_3'); t3.setposition(33, 55);   tracks.push(t3);
@@ -23,13 +37,7 @@ setContext("tracks", tracks);
 <div id="outer">
 <TimelineFrame px_h={300} px_w={800}/>
 </div>
+```
 
-<style>
-#outer{
-	margin-top: 20px;
-	margin-left: 20px;
-	width: 800px;
-	height: 300px;
-	border: 1px solid #aaa;
-}
-</style>
+## License
+[MIT](LICENSE)
