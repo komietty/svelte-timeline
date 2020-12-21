@@ -1,12 +1,13 @@
 <script lang="ts">
 import { createEventDispatcher, getContext } from 'svelte';
-import { base_col, slct_col, base_txt, slct_txt } from '../style';
 import type { TrackAsset, ITrackable } from '../track';
+import type { Style }  from '../style';
 import type { Tracks } from '../store';
 import { focusedID } from '../store';
 import Menu from './Menu.svelte';
 export let ta: TrackAsset<ITrackable>;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
+let styles = getContext('styles') as Style;
 let dsp = createEventDispatcher();
 let prm = {n: ta.name, x: 0, y: 0 };
 
@@ -20,7 +21,7 @@ const openMenu = async(e) => {
 
 <div class="m"
      class:selected={ta.uuid === $focusedID}
-     style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px; --b:{base_col}; --s:{slct_col}; --bt:{base_txt}; --st:{slct_txt};"
+     style="margin-left:{ta.px_l}px; width:{ta.px_r - ta.px_l}px; --b:{styles.base_col}; --s:{styles.slct_col}; --bt:{styles.base_txt}; --st:{styles.slct_txt};"
      draggable = "true"
      on:mousedown={() => $focusedID = ta.uuid}
      on:dragstart={e => ta.dragbgn_trans(e)}

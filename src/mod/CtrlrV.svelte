@@ -1,18 +1,19 @@
 <script lang='ts'>
 import { getContext } from 'svelte';
 import {current, paused, sc2px, tl_sc} from '../store';
-import { bcgd_col, slct_col, base_txt, slct_txt } from '../style';
+import type { Style }      from '../style';
 import type { Tracks }     from '../store';
 import type { ITrackable } from '../track';
 export let px_w: number = 250;
 export let px_h: number = 300;
 export let px_e: number = 300;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
+let styles = getContext('styles') as Style;
 const zoomin  = () => { $sc2px = $sc2px - 1; tracks.scale(); }
 const zoomout = () => { $sc2px = $sc2px + 1; tracks.scale(); }
 </script>
 
-<div id="ctrler" style="--w:{px_w}px; --h:{px_h}px; --b:{bcgd_col}; --s:{slct_col}; --bt:{base_txt}; --st:{slct_txt};">
+<div id="ctrler" style="--w:{px_w}px; --h:{px_h}px; --b:{styles.bcgd_col}; --s:{styles.slct_col}; --bt:{styles.base_txt}; --st:{styles.slct_txt};">
     <button id="btn" class:paused={$paused} on:click={() => $paused = !$paused}>
         {#if $paused} <span>play </span>
         {:else}       <span>pause</span>

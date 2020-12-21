@@ -2,15 +2,16 @@
 import { getContext } from 'svelte';
 import { get } from 'svelte/store';
 import { current, normcur, dragged, px2sc, tl_sc, tl_px, sc2px } from '../store';
-import { vertical, base_col, curr_col } from '../style';
+import type { Style }      from '../style';
 import type { Tracks }     from '../store';
 import type { ITrackable } from '../track';
 import Track from './Track.svelte'
 import TU    from './TU.svelte'
 import TV    from './TV.svelte'
 
-let prv: number;
 let tracks = getContext('tracks') as Tracks<ITrackable>;
+let styles = getContext('styles') as Style;
+let prv: number;
 export let w: number = document.body.clientWidth;
 export let h: number = 300;
 export let x: number = 0;
@@ -34,7 +35,7 @@ const flip_fin = (e, tgt) => {
 const closeMenu = () => { get(tracks).forEach(t => t.menu = false); }
 </script>
 
-<div id="e" class:float={vertical} style="--w:{w}px; --h:{h}px; --x:{x}px; --c:{curr_col}; --b:{base_col}">
+<div id="e" class:float={styles.vertical} style="--w:{w}px; --h:{h}px; --x:{x}px; --c:{styles.curr_col}; --b:{styles.base_col}">
     <div id='inner' style="--duration:{$tl_px}px">
         <div id='current'
              on:dragstart|stopPropagation={dragstr_curr}

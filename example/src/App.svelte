@@ -1,12 +1,11 @@
 <script lang="ts">
-import { setContext } from 'svelte';
-import { genTracks, TimelineFrame, TrackAsset } from 'sveltmline'
+import { genTracks, TimelineFrame, TrackAsset, ITrackable, Style } from 'sveltmline'
 
-class Obj {
-    visible = false;
-    url = undefined;
-    OnLoadHtmlElement(elm: HTMLElement){};
-    tick(depth: number){};
+class Obj implements ITrackable {
+	visible = false;
+    url = undefined; // by assigning url, a track automatically be a video track
+    OnLoadHtmlElement(elm: HTMLElement){}; // called once when element is loaded
+    tick(depth: number){}; // called every frame
 }
 
 const tracks:any = genTracks<Obj>();
@@ -17,11 +16,19 @@ const t4 = new TrackAsset(new Obj(), 'track_4'); t4.setposition(0, 150);   track
 const t5 = new TrackAsset(new Obj(), 'track_5'); t5.setposition(100, 140); tracks.push(t5);
 const t6 = new TrackAsset(new Obj(), 'track_6'); t6.setposition(40, 55);   tracks.push(t6);
 const t7 = new TrackAsset(new Obj(), 'track_7'); t7.setposition(80, 100);  tracks.push(t7);
-setContext("tracks", tracks);
+
+const styles = new Style();
+styles.vertical = true;
+styles.bcgd_col = '#ffffff';
+styles.base_col = '#e6e6e6';
+styles.slct_col = '#0022ff';
+styles.curr_col = '#0022ff';
+styles.base_txt = '#333333';
+styles.slct_txt = '#ffffff';
 </script>
 
 <div id="outer">
-<TimelineFrame px_h={300} px_w={800}/>
+<TimelineFrame px_h={300} px_w={800} tracks={tracks} styles={styles}/>
 </div>
 
 <style>
