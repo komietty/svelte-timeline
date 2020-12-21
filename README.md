@@ -18,7 +18,8 @@ import { genTracks, TimelineFrame, TrackAsset } from 'sveltmline'
 
 class Obj {
     visible = false;
-    url = undefined;
+    // if you push url here a track will automatically become video track.
+    url = undefined; 
     OnLoadHtmlElement(elm: HTMLElement){};
     tick(depth: number){};
 }
