@@ -1,6 +1,6 @@
 {
   "name": "sveltmline",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "tab base editor ui library with svelte",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
