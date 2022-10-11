@@ -1,4 +1,4 @@
-# Sveltmline
+# Svelte-timeline
 A timeline component for svelte.
 
 Typescript is available. Follow the instruction [here](https://svelte.dev/blog/svelte-and-typescript).
